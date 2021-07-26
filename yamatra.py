@@ -37,7 +37,18 @@ class Trainer:
         self.max_time = datetime.timedelta(seconds=seconds)
         self.max_div_time = datetime.timedelta(seconds=2*seconds)
         self.max_versuche = 2
+        self.engine = None
+        
+        if os.path.exists('config.txt'):
+            self._load_config()
 
+        self._init_voice()
+    
+    def _load_config(self):
+        #TODO: load config
+        pass
+
+    def _init_voice(self):
         if not google_voice:    
             try:
                 #Enable if you have to use windows
@@ -51,7 +62,6 @@ class Trainer:
                 print(error)
                 print('No Voice Support found')
                 self.engine = None
-
 
     def _say(self, text, lang='de'):
         print(text)
@@ -85,8 +95,14 @@ class Trainer:
         self._say("Willkommen zum Training!")
 
     def save_score(self):
-        with open('score.txt', 'a') as f:
-            f.write(f"'{datetime.datetime.now()}', '{self.name}', {self.punkte}, {self.trained},  {self.punkte / self.trained}, '{self.train_duration}'\n")
+        if os.path.exists('score.txt'):
+            with open('score.txt', 'a') as f:
+                f.write(f"'{datetime.datetime.now()}', '{self.name}', {self.punkte}, {self.trained},  {self.punkte / self.trained}, '{self.train_duration}'\n")
+        else:
+            with open('score.txt', 'w') as f:
+                f.write("Datum,Spieler,Punkte,Spiele,Durchschnitt,Spielzeit\n")
+                f.write(f"'{datetime.datetime.now()}', '{self.name}', {self.punkte}, {self.trained},  {self.punkte / self.trained}, '{self.train_duration}'\n")
+            
 
     def train(self):        
         self._say('Gib "Stopp" ein, um das Training zu beenden')
