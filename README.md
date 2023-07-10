@@ -1,5 +1,5 @@
 # yamatra
-Yet Another Mathe Trainer
+Yet Another Math Trainer
 
 A simple mathematics trainer, with voice output and basic mathe operations.
 
